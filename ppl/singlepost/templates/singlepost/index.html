@@ -1,0 +1,159 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+    {% load static %}
+<title>Single Post</title>
+<script src="{% static 'js/jquery.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/bootstrap.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/bootstrap.min.js' %}" type="text/javascript"></script>
+<link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" type="text/css" />
+<link href="{% static 'css/bootstrap-responsive.css' %}" rel="stylesheet" type="text/css" />
+<script>
+$(document).ready(function() {
+	$('#rght_cat_bg').click(function() {
+			$('.rght_list').toggle("slide");
+	});
+});
+</script>
+<script>
+$(document).ready(function() {
+	$('#opn_cat_bg').click(function() {
+			$('.sub_dwn').toggle("slide");
+	});
+});
+</script>
+</head>
+
+<body>
+<div class="navbar navbar-inverse navbar-fixed-top">
+  <div class="navbar-inner">
+    <div class="container">
+      <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
+      <a class="brand" href="">PPL</a>
+      <div class="pro_info pull-right">
+        <div class="pro_icn"><img src="{% static 'images/pic_small.png'%}"></div>
+        <div class="pro_txt">Me<b class="caret"></b></div>
+        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+          <li><a tabindex="-1" href="#">My Profile</a></li>
+          <li><a tabindex="-1" href="#">Message Box</a></li>
+          <li><a tabindex="-1" href="#">Change Language</a></li>
+          <li class="divider"></li>
+          <li><a tabindex="-1" href="#">
+            <input type="text" placeholder="search" >
+            </a></li>
+        </ul>
+      </div>
+      <div class="nav-collapse collapse">
+        <ul class="nav">
+          <li class="active"> <a href="">Home</a> </li>
+          <li class=""> <a href="">E-Coupons</a> </li>
+          <li class=""> <a href="">E-Brands</a> </li>
+          <li class=""> <a href="">Resuse Market</a> </li>
+          <li class=""> <a href="">Lost and Found</a> </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="header">
+  <div class="header_lft">
+    <div class="logo"><a href="#"><img src="{% static 'images/logo.png'%}"></a></div>
+    <div class="navigatn">
+      <ul>
+        <li><a href="#" class="active">Home</a></li>
+        <li><a href="#"> E-Coupons </a></li>
+        <li><a href="#">E-Brands </a></li>
+        <li><a href="#"> Resuse Market </a></li>
+        <li><a href="#"> Lost and Found</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="header_rgt">
+    <div class="flag_div"><img src="{% static 'images/flag.png'%}"></div>
+    <input type="text" placeholder="Search" class="txt_box">
+    <div class="msg_box"><a href="#"><span class="msg_count">100</span></a></div>
+    <div class="info_div">
+      <div class="image_div"> <img src="{% static 'images/pic.png'%}"> </div>
+      <div class="info_div1">Me</div>
+    </div>
+  </div>
+</div>
+<div class="container">
+  <div class="content">
+    <div class="content_lft">
+
+      <div class="contnt_2">
+        <div class="div_a">
+          <div class="div_title">User Interface PSD Source files Web Designing for web</div>
+          <div class="btm_rgt">
+              <div class="btm_arc">Cats</div>
+            </div>
+          <div class="div_top">
+            <div class="div_top_lft"><img src="{% static 'images/img_6.png'%}">{{user}}</div>
+            <div class="div_top_rgt"><span class="span_date">02 Jan 2014</span><span class="span_time">{{post.created_on.date}}</span></div>
+          </div>
+          <div class="div_image"><img src="{{MEDIA_URL}}{{post}}" alt="pet" /></div>
+          <div class="div_btm">
+            <div class="btm_list">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="contnt_3">
+        <ul>
+          {% for comment,reply in comment_reply.items %}
+          <li>
+            <div class="list_image">
+              <div class="image_sec"><img src="{% static 'images/post_img.png'%}"></div>
+              <div class="image_name">{{user}}</div>
+            </div>
+            <div class="list_info">
+              {{comment.comment}}
+              <ul>
+              {%for rep in reply%}
+                <li>{{rep.reply}}</li>
+                {% endfor %}
+              </ul>
+            </div>
+
+            <form action="/singlepost/add_reply/" method="post">
+              {% csrf_token %}
+              <input type="hidden" name="post_id" value="{{post.id}}" readonly/>
+              <input type="hidden" name="comment_info" value="{{comment.id}}" readonly/>
+              <input type="text" name="reply" class="cmnt bx"/>
+              <input type="submit" value="Reply" class="orng_btn">
+            </form>
+          </li>
+          {% endfor %}
+        </ul>
+         <div class="cmnt_div">
+           <form action="/singlepost/add_comment/" method="post">
+             {% csrf_token %}
+              <input type="hidden" name="post" value="{{post.id}}" readonly/>
+              <input type="text" name="comment" value="Add a Comment" class="cmnt_bx"/>
+              <input type="submit" class="sub_bttn" value="Submit Comment"/>
+             </form>
+            </div>
+
+      </div>
+    </div>
+  </div>
+  <div class="clear"></div>
+</div>
+<div class="footr">
+  <div class="footr_lft">
+    <div class="footer_div1">Copyright © Pet-Socail 2014 All Rights Reserved</div>
+    <div class="footer_div2"><a href="#">Privacy Policy </a>| <a href="#"> Terms & Conditions</a></div>
+  </div>
+  <div class="footr_rgt">
+    <ul>
+      <li><a href="#"><img src="{% static 'images/social_1.png'%}"></a></li>
+      <li><a href="#"><img src="{% static 'images/social_2.png'%}"></a></li>
+      <li><a href="#"><img src="{% static 'images/social_3.png'%}"></a></li>
+      <li><a href="#"><img src="{% static 'images/social_4.png'%}"></a></li>
+    </ul>
+  </div>
+</div>
+</body>
+</html>
